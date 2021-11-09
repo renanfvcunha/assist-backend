@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -6,6 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { hash } from 'bcryptjs';
 
 @Entity({
   name: 'usuarios',
@@ -54,4 +58,14 @@ export class User {
     name: 'excluido_em',
   })
   deletedAt: Date;
+
+  @BeforeInsert()
+  async hashPasswordOnInsert(): Promise<void> {
+    this.password = await hash(this.password, 8);
+  }
+
+  @BeforeUpdate()
+  async hashPasswordOnUpdate(): Promise<void> {
+    if (this.password) this.password = await hash(this.password, 8);
+  }
 }
