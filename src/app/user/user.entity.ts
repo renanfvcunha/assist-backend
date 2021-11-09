@@ -40,7 +40,6 @@ export class User {
   @Column({
     name: 'senha',
     length: 150,
-    select: false,
   })
   password: string;
 

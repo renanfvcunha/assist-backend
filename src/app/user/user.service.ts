@@ -149,4 +149,8 @@ export class UserService {
   async deleteUser(id: string): Promise<UpdateResult> {
     return await this.userRepository.softDelete(id);
   }
+
+  async findByName(username: string): Promise<User | undefined> {
+    return await this.userRepository.findOne({ where: { username } });
+  }
 }

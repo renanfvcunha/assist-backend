@@ -12,9 +12,11 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { UserService } from '~/app/user/user.service';
 
@@ -31,6 +33,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async index(
     @Query('page') page: string,
     @Query('perPage') perPage: string,
