@@ -68,6 +68,7 @@ export class UserController {
   }
 
   @Patch('me/password')
+  @UseGuards(AuthGuard('jwt'))
   async updatePassword(
     @UserDec() userId: string,
     @Body() data: UpdatePasswordDto,
