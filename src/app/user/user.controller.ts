@@ -94,7 +94,9 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('jwt'))
   async destroy(
+    @UserDec() userId: string,
     @Param(
       'id',
       new ParseUUIDPipe({
@@ -105,6 +107,6 @@ export class UserController {
     )
     id: string,
   ): Promise<void> {
-    await this.userService.deleteUser(id);
+    await this.userService.deleteUser(userId, id);
   }
 }

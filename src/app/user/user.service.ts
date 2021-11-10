@@ -146,7 +146,15 @@ export class UserService {
     return await this.userRepository.save(userToUpdate);
   }
 
-  async deleteUser(id: string): Promise<UpdateResult> {
+  async deleteUser(userId: string, id: string): Promise<UpdateResult> {
+    const checkOwn = await this.findUser(userId);
+
+    if (checkOwn.id === id) {
+      throw new UnprocessableEntityException(
+        'Não é possível remover seu próprio usuário!',
+      );
+    }
+
     return await this.userRepository.softDelete(id);
   }
 
