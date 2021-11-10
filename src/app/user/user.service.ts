@@ -189,4 +189,12 @@ export class UserService {
 
     return permissionsToSet;
   }
+
+  async getPermissions(userId: string): Promise<Permission[]> {
+    const user = await this.userRepository.findOneOrFail(userId, {
+      relations: ['permissions'],
+    });
+
+    return user.permissions;
+  }
 }

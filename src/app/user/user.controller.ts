@@ -28,12 +28,14 @@ import { UpdateUserDto } from '~/app/user/dto/updateUser.dto';
 
 import { User as UserDec } from '~/decorators/user.decorator';
 
+import { MaintainUsersGuard } from '~/guards/maintainUsers.guard';
+
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(MaintainUsersGuard)
   async index(
     @Query('page') page: string,
     @Query('perPage') perPage: string,
@@ -47,12 +49,14 @@ export class UserController {
   }
 
   @Post()
+  @UseGuards(MaintainUsersGuard)
   @UsePipes(new ValidationPipe())
   async store(@Body() data: CreateUserDto): Promise<User> {
     return await this.userService.createUser(data);
   }
 
   @Get(':id')
+  @UseGuards(MaintainUsersGuard)
   async show(
     @Param(
       'id',
@@ -77,6 +81,7 @@ export class UserController {
   }
 
   @Put(':id')
+  @UseGuards(MaintainUsersGuard)
   async update(
     @Param(
       'id',
@@ -94,7 +99,7 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(MaintainUsersGuard)
   async destroy(
     @UserDec() userId: string,
     @Param(
