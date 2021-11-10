@@ -11,7 +11,7 @@ export const ormConfig = () => ({
   migrations: [resolve(__dirname, 'migrations', '*{.ts,.js}')],
   cli: {
     migrationsDir: resolve(__dirname, 'migrations'),
-    entitiesDir: resolve(__dirname, '..', 'app', '**'),
+    entitiesDir: resolve(__dirname, '..', 'app'),
   },
   synchronize: false,
 });

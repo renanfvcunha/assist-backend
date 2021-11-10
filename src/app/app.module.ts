@@ -8,6 +8,7 @@ import { AppController } from '~/app/app.controller';
 
 import { UserModule } from '~/app/user/user.module';
 import { AuthModule } from '~/app/auth/auth.module';
+import { PermissionModule } from './permission/permission.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from '~/app/auth/auth.module';
     TypeOrmModule.forRoot(ormConfig() as TypeOrmModuleOptions),
     UserModule,
     AuthModule,
+    PermissionModule,
   ],
   controllers: [AppController],
   providers: [],
