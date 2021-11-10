@@ -43,4 +43,6 @@ export class CreateUserDto {
     message: 'Senhas não coincidem!',
   })
   readonly passwordConf: string;
+
+  readonly permissions?: number[];
 }

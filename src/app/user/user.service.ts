@@ -9,6 +9,7 @@ import { Not, Repository, UpdateResult } from 'typeorm';
 import { compare } from 'bcryptjs';
 
 import { User } from '~/app/user/user.entity';
+import { Permission } from '~/app/permission/permission.entity';
 
 import { CreateUserDto } from '~/app/user/dto/createUser.dto';
 import { UpdatePasswordDto } from '~/app/user/dto/updatePassword.dto';
@@ -16,10 +17,13 @@ import { UpdateUserDto } from '~/app/user/dto/updateUser.dto';
 
 import { numberMask } from '~/helpers/masks.helper';
 
+import { PermissionService } from '~/app/permission/permission.service';
+
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly permissionService: PermissionService,
   ) {}
 
   async getUsers(
@@ -80,8 +84,27 @@ export class UserService {
     }
 
     /** Criando Usuário */
-    const user = this.userRepository.create(data);
+    const user = new User();
+    user.name = data.name;
+    user.username = data.username;
     user.cpf = numberMask(data.cpf);
+    user.password = data.password;
+
+    const permissions = await this.permissionService.getPermissions();
+
+    const permissionsToSet: Permission[] = [];
+
+    data.permissions &&
+      data.permissions.length > 0 &&
+      data.permissions.forEach((id) => {
+        permissions.forEach((permission) => {
+          if (permission.id === id) {
+            permissionsToSet.push(permission);
+          }
+        });
+      });
+
+    user.permissions = permissionsToSet;
 
     return await this.userRepository.save(user);
   }
@@ -142,6 +165,22 @@ export class UserService {
     if (data.username) userToUpdate.username = data.username;
     if (data.cpf) userToUpdate.cpf = numberMask(data.cpf);
     if (data.password) userToUpdate.password = data.password;
+
+    const permissions = await this.permissionService.getPermissions();
+
+    const permissionsToSet: Permission[] = [];
+
+    data.permissions &&
+      data.permissions.length > 0 &&
+      data.permissions.forEach((id) => {
+        permissions.forEach((permission) => {
+          if (permission.id === id) {
+            permissionsToSet.push(permission);
+          }
+        });
+      });
+
+    userToUpdate.permissions = permissionsToSet;
 
     return await this.userRepository.save(userToUpdate);
   }

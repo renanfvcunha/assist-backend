@@ -5,11 +5,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
 import { hash } from 'bcryptjs';
+
+import { Permission } from '~/app/permission/permission.entity';
 
 @Entity({
   name: 'usuarios',
@@ -67,4 +69,7 @@ export class User {
   async hashPasswordOnUpdate(): Promise<void> {
     if (this.password) this.password = await hash(this.password, 8);
   }
+
+  @ManyToMany(() => Permission, (permission) => permission.users)
+  permissions: Permission[];
 }

@@ -39,4 +39,6 @@ export class UpdateUserDto {
     message: 'Senhas não coincidem!',
   })
   readonly passwordConf?: string;
+
+  readonly permissions?: number[];
 }
