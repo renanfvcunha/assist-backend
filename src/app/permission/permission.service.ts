@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 
@@ -28,15 +24,11 @@ export class PermissionService {
   }
 
   private async findPermission(id: number): Promise<Permission> {
-    try {
-      return await this.permissionRepository.findOneOrFail(id);
-    } catch (err) {
-      if ((err as Error).name === 'EntityNotFoundError') {
-        throw new NotFoundException('Permissão não encontrada!');
-      }
+    const permission = await this.permissionRepository.findOne(id);
 
-      throw new InternalServerErrorException();
-    }
+    if (!permission) throw new NotFoundException('Permissão não encontrada!');
+
+    return permission;
   }
 
   async updatePermission(id: number, data: PermissionDto): Promise<Permission> {

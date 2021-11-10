@@ -9,6 +9,7 @@ import { AppController } from '~/app/app.controller';
 import { UserModule } from '~/app/user/user.module';
 import { AuthModule } from '~/app/auth/auth.module';
 import { PermissionModule } from './permission/permission.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PermissionModule } from './permission/permission.module';
     UserModule,
     AuthModule,
     PermissionModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [],
