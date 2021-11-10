@@ -89,22 +89,7 @@ export class UserService {
     user.username = data.username;
     user.cpf = numberMask(data.cpf);
     user.password = data.password;
-
-    const permissions = await this.permissionService.getPermissions();
-
-    const permissionsToSet: Permission[] = [];
-
-    data.permissions &&
-      data.permissions.length > 0 &&
-      data.permissions.forEach((id) => {
-        permissions.forEach((permission) => {
-          if (permission.id === id) {
-            permissionsToSet.push(permission);
-          }
-        });
-      });
-
-    user.permissions = permissionsToSet;
+    user.permissions = await this.setPermissions(data.permissions);
 
     return await this.userRepository.save(user);
   }
@@ -165,22 +150,8 @@ export class UserService {
     if (data.username) userToUpdate.username = data.username;
     if (data.cpf) userToUpdate.cpf = numberMask(data.cpf);
     if (data.password) userToUpdate.password = data.password;
-
-    const permissions = await this.permissionService.getPermissions();
-
-    const permissionsToSet: Permission[] = [];
-
-    data.permissions &&
-      data.permissions.length > 0 &&
-      data.permissions.forEach((id) => {
-        permissions.forEach((permission) => {
-          if (permission.id === id) {
-            permissionsToSet.push(permission);
-          }
-        });
-      });
-
-    userToUpdate.permissions = permissionsToSet;
+    if (data.permissions)
+      userToUpdate.permissions = await this.setPermissions(data.permissions);
 
     return await this.userRepository.save(userToUpdate);
   }
@@ -199,5 +170,23 @@ export class UserService {
 
   async findByName(username: string): Promise<User | undefined> {
     return await this.userRepository.findOne({ where: { username } });
+  }
+
+  private async setPermissions(ids?: number[]): Promise<Permission[]> {
+    const permissions = await this.permissionService.getPermissions();
+
+    const permissionsToSet: Permission[] = [];
+
+    ids &&
+      ids.length > 0 &&
+      ids.forEach((id) => {
+        permissions.forEach((permission) => {
+          if (permission.id === id) {
+            permissionsToSet.push(permission);
+          }
+        });
+      });
+
+    return permissionsToSet;
   }
 }
