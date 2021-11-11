@@ -45,4 +45,12 @@ export class CreateUserDto {
   readonly passwordConf: string;
 
   readonly permissions?: number[];
+
+  @IsNotEmpty({
+    message: 'É necessário informar pelo menos um contato.',
+  })
+  readonly contacts: {
+    contactTypeId: number;
+    contact: string;
+  }[];
 }

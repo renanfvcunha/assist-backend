@@ -10,20 +10,24 @@ import { compare } from 'bcryptjs';
 
 import { User } from '~/app/user/user.entity';
 import { Permission } from '~/app/permission/permission.entity';
+import { Contact } from '~/app/contact/contact.entity';
+import { ContactType } from '~/app/contact/contact-type/contact-type.entity';
 
 import { CreateUserDto } from '~/app/user/dto/createUser.dto';
 import { UpdatePasswordDto } from '~/app/user/dto/updatePassword.dto';
 import { UpdateUserDto } from '~/app/user/dto/updateUser.dto';
 
-import { numberMask } from '~/helpers/masks.helper';
-
 import { PermissionService } from '~/app/permission/permission.service';
+import { ContactTypeService } from '~/app/contact/contact-type/contact-type.service';
+
+import { numberMask } from '~/helpers/masks.helper';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly permissionService: PermissionService,
+    private readonly contactTypeService: ContactTypeService,
   ) {}
 
   async getUsers(
@@ -83,6 +87,12 @@ export class UserService {
         );
     }
 
+    if (data.contacts.length < 1) {
+      throw new UnprocessableEntityException(
+        'É preciso informar pelo menos um contato.',
+      );
+    }
+
     /** Criando Usuário */
     const user = new User();
     user.name = data.name;
@@ -90,6 +100,7 @@ export class UserService {
     user.cpf = numberMask(data.cpf);
     user.password = data.password;
     user.permissions = await this.setPermissions(data.permissions);
+    user.contacts = await this.setContacts(data.contacts);
 
     return await this.userRepository.save(user);
   }
@@ -145,6 +156,12 @@ export class UserService {
         );
     }
 
+    if (data.contacts && data.contacts.length < 1) {
+      throw new UnprocessableEntityException(
+        'É preciso informar pelo menos um contato.',
+      );
+    }
+
     /** Atualizando usuário */
     if (data.name) userToUpdate.name = data.name;
     if (data.username) userToUpdate.username = data.username;
@@ -152,6 +169,8 @@ export class UserService {
     if (data.password) userToUpdate.password = data.password;
     if (data.permissions)
       userToUpdate.permissions = await this.setPermissions(data.permissions);
+    if (data.contacts)
+      userToUpdate.contacts = await this.setContacts(data.contacts);
 
     return await this.userRepository.save(userToUpdate);
   }
@@ -181,9 +200,7 @@ export class UserService {
       ids.length > 0 &&
       ids.forEach((id) => {
         permissions.forEach((permission) => {
-          if (permission.id === id) {
-            permissionsToSet.push(permission);
-          }
+          if (permission.id === id) permissionsToSet.push(permission);
         });
       });
 
@@ -196,5 +213,33 @@ export class UserService {
     });
 
     return user.permissions;
+  }
+
+  private async setContacts(
+    contacts: CreateUserDto['contacts'],
+  ): Promise<Contact[]> {
+    const contactTypes = await this.contactTypeService.getContactTypes();
+
+    const contactTypesToSet: ContactType[] = [];
+
+    contacts.length > 0 &&
+      contacts.forEach((contact) => {
+        contactTypes.forEach((cType) => {
+          if (cType.id === contact.contactTypeId) contactTypesToSet.push(cType);
+        });
+      });
+
+    const contactsToSet: Contact[] = [];
+
+    contacts.length > 0 &&
+      contacts.forEach((contact, i) => {
+        const ctt = new Contact();
+        ctt.contactType = contactTypesToSet[i];
+        ctt.contact = contact.contact;
+
+        contactsToSet.push(ctt);
+      });
+
+    return contactsToSet;
   }
 }

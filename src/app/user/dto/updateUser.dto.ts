@@ -41,4 +41,9 @@ export class UpdateUserDto {
   readonly passwordConf?: string;
 
   readonly permissions?: number[];
+
+  readonly contacts?: {
+    contactTypeId: number;
+    contact: string;
+  }[];
 }

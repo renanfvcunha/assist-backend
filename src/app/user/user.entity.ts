@@ -6,12 +6,14 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { hash } from 'bcryptjs';
 
 import { Permission } from '~/app/permission/permission.entity';
+import { Contact } from '~/app/contact/contact.entity';
 
 @Entity({
   name: 'usuarios',
@@ -72,4 +74,9 @@ export class User {
 
   @ManyToMany(() => Permission, (permission) => permission.users)
   permissions: Permission[];
+
+  @OneToMany(() => Contact, (contact) => contact.user, {
+    cascade: true,
+  })
+  contacts: Contact[];
 }
