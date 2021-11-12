@@ -3,11 +3,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { City } from '~/app/address/city/city.entity';
 import { UF } from '~/app/address/uf/uf.entity';
+import { Clinic } from '~/app/clinic/clinic.entity';
 
 @Entity({
   name: 'enderecos',
@@ -73,4 +75,13 @@ export class Address {
     name: 'id_uf',
   })
   uf: UF;
+
+  @OneToOne(() => Clinic, (clinic) => clinic.address, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({
+    name: 'id_clinica',
+  })
+  clinic: Clinic;
 }

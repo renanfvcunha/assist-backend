@@ -9,6 +9,7 @@ import {
 import { ContactType } from '~/app/contact/contact-type/contact-type.entity';
 
 import { User } from '~/app/user/user.entity';
+import { Clinic } from '~/app/clinic/clinic.entity';
 
 @Entity({
   name: 'contatos',
@@ -40,4 +41,13 @@ export class Contact {
     name: 'id_usuario',
   })
   user: User;
+
+  @ManyToOne(() => Clinic, (clinic) => clinic.contacts, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({
+    name: 'id_clinica',
+  })
+  clinic: Clinic;
 }

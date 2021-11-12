@@ -11,6 +11,7 @@ import { AuthModule } from '~/app/auth/auth.module';
 import { PermissionModule } from './permission/permission.module';
 import { ContactModule } from './contact/contact.module';
 import { AddressModule } from './address/address.module';
+import { ClinicModule } from './clinic/clinic.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AddressModule } from './address/address.module';
     PermissionModule,
     ContactModule,
     AddressModule,
+    ClinicModule,
   ],
   controllers: [AppController],
   providers: [],
