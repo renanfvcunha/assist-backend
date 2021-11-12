@@ -1,4 +1,6 @@
+import { UnprocessableEntityException } from '@nestjs/common';
 import {
+  BeforeInsert,
   Column,
   Entity,
   JoinColumn,
@@ -55,6 +57,14 @@ export class Address {
     length: 50,
   })
   neighborhood: string;
+
+  @BeforeInsert()
+  verifyNumberOrComplement() {
+    if (!this.number && !this.complement)
+      throw new UnprocessableEntityException(
+        'É necessário informar o número do logradouro OU o complemento.',
+      );
+  }
 
   @ManyToOne(() => City, (city) => city.addresses, {
     cascade: true,
