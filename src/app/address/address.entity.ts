@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+import { City } from '~/app/address/city/city.entity';
+import { UF } from '~/app/address/uf/uf.entity';
 
 @Entity({
   name: 'enderecos',
@@ -44,4 +53,24 @@ export class Address {
     length: 50,
   })
   neighborhood: string;
+
+  @ManyToOne(() => City, (city) => city.addresses, {
+    cascade: true,
+    eager: true,
+    nullable: false,
+  })
+  @JoinColumn({
+    name: 'id_cidade',
+  })
+  city: City;
+
+  @ManyToOne(() => UF, (uf) => uf.addresses, {
+    cascade: true,
+    eager: true,
+    nullable: false,
+  })
+  @JoinColumn({
+    name: 'id_uf',
+  })
+  uf: UF;
 }
