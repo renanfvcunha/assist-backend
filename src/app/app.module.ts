@@ -10,6 +10,7 @@ import { UserModule } from '~/app/user/user.module';
 import { AuthModule } from '~/app/auth/auth.module';
 import { PermissionModule } from './permission/permission.module';
 import { ContactModule } from './contact/contact.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ContactModule } from './contact/contact.module';
     AuthModule,
     PermissionModule,
     ContactModule,
+    AddressModule,
   ],
   controllers: [AppController],
   providers: [],

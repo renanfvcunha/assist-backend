@@ -20,7 +20,7 @@ export class MaintainUsersGuard extends AuthGuard('jwt') {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  async handleRequest(err: any, user: any) {
+  async handleRequest(err: any, user: any): Promise<any> {
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
