@@ -7,6 +7,7 @@ import {
   Entity,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,6 +15,7 @@ import { hash } from 'bcryptjs';
 
 import { Permission } from '~/app/permission/permission.entity';
 import { Contact } from '~/app/contact/contact.entity';
+import { Professional } from '~/app/professional/professional.entity';
 
 @Entity({
   name: 'usuarios',
@@ -79,4 +81,9 @@ export class User {
     cascade: true,
   })
   contacts: Contact[];
+
+  @OneToOne(() => Professional, (professional) => professional.user, {
+    cascade: true,
+  })
+  professional: Professional;
 }

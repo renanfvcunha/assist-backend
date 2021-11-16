@@ -12,6 +12,7 @@ import { PermissionModule } from './permission/permission.module';
 import { ContactModule } from './contact/contact.module';
 import { AddressModule } from './address/address.module';
 import { ClinicModule } from './clinic/clinic.module';
+import { ProfessionalModule } from './professional/professional.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ClinicModule } from './clinic/clinic.module';
     ContactModule,
     AddressModule,
     ClinicModule,
+    ProfessionalModule,
   ],
   controllers: [AppController],
   providers: [],
