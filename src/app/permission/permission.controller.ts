@@ -9,6 +9,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
 
 import { PermissionService } from '~/app/permission/permission.service';
 
@@ -33,12 +34,15 @@ export class PermissionController {
 
   @Put(':id')
   @UsePipes(new ValidationPipe())
-  async update(@Param('id') id: string, @Body() data: PermissionDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() data: PermissionDto,
+  ): Promise<Permission> {
     return await this.permissionService.updatePermission(parseInt(id), data);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
+  async delete(@Param('id') id: string): Promise<DeleteResult> {
     return await this.permissionService.deletePermission(parseInt(id));
   }
 }
