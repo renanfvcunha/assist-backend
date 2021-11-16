@@ -2,7 +2,7 @@ import { IsNotEmpty, Length } from 'class-validator';
 
 import { CreateAddressDto } from '~/app/address/dto/createAddress.dto';
 
-export class CreateClinicDto extends CreateAddressDto {
+export class ClinicDto extends CreateAddressDto {
   @IsNotEmpty({
     message: 'Nome da clínica é obrigatório',
   })
@@ -13,7 +13,9 @@ export class CreateClinicDto extends CreateAddressDto {
   })
   initials: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: 'CNPJ é obrigatório!',
+  })
   @Length(18, 18, {
     message: 'CNPJ deve ter exatamente 18 caracteres!',
   })
