@@ -8,7 +8,7 @@ import { DeleteResult, Not, Repository } from 'typeorm';
 
 import { Speciality } from '~/app/professional/speciality/speciality.entity';
 
-import { SpecialityDto } from '~/app/professional/speciality/dto/speciality.dto';
+import { SpecialityDto } from '~/app/professional/dto/speciality.dto';
 
 @Injectable()
 export class SpecialityService {

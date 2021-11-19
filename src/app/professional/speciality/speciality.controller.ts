@@ -15,7 +15,7 @@ import { SpecialityService } from '~/app/professional/speciality/speciality.serv
 
 import { Speciality } from '~/app/professional/speciality/speciality.entity';
 
-import { SpecialityDto } from '~/app/professional/speciality/dto/speciality.dto';
+import { SpecialityDto } from '~/app/professional/dto/speciality.dto';
 
 @Controller('specialities')
 export class SpecialityController {

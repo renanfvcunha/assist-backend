@@ -15,7 +15,7 @@ import { SubSpeciality } from '~/app/professional/sub-speciality/sub-speciality.
 
 import { SubSpecialityService } from '~/app/professional/sub-speciality/sub-speciality.service';
 
-import { SubSpecialityDto } from '~/app/professional/sub-speciality/dto/speciality.dto';
+import { SubSpecialityDto } from '~/app/professional/dto/subSpeciality.dto';
 
 @Controller('sub-specialities')
 export class SubSpecialityController {

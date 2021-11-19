@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Professional } from '~/app/professional/professional.entity';
-import { Speciality } from './speciality/speciality.entity';
-import { SubSpeciality } from './sub-speciality/sub-speciality.entity';
-import { User } from '../user/user.entity';
+import { Speciality } from '~/app/professional/speciality/speciality.entity';
+import { SubSpeciality } from '~/app/professional/sub-speciality/sub-speciality.entity';
+import { User } from '~/app/user/user.entity';
 
 import { CreateProfessionalDto } from '~/app/professional/dto/createProfessional.dto';
 
@@ -20,9 +20,22 @@ export class ProfessionalService {
   ) {}
 
   async getProfessionals(): Promise<Professional[]> {
-    return await this.professionalRepository.find({
-      relations: ['user', 'speciality', 'subSpeciality'],
-    });
+    const professional = await this.professionalRepository
+      .createQueryBuilder('professional')
+      .select([
+        'user.id',
+        'user.name',
+        'user.cpf',
+        'professional.council',
+        'speciality.name',
+        'subSpeciality.name',
+      ])
+      .innerJoin('professional.user', 'user')
+      .innerJoin('professional.speciality', 'speciality')
+      .leftJoin('professional.subSpeciality', 'subSpeciality')
+      .getMany();
+
+    return professional;
   }
 
   async createProfessional(data: CreateProfessionalDto): Promise<Professional> {

@@ -9,7 +9,7 @@ import { DeleteResult, Not, Repository } from 'typeorm';
 import { SubSpeciality } from '~/app/professional/sub-speciality/sub-speciality.entity';
 import { Speciality } from '~/app/professional/speciality/speciality.entity';
 
-import { SubSpecialityDto } from '~/app/professional/sub-speciality/dto/speciality.dto';
+import { SubSpecialityDto } from '~/app/professional/dto/subSpeciality.dto';
 
 @Injectable()
 export class SubSpecialityService {
