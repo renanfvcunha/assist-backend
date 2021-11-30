@@ -4,7 +4,7 @@
   "description": "",
   "author": "R.C. Informatica",
   "private": true,
-  "license": "PROPRIETARY",
+  "license": "Proprietary",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
